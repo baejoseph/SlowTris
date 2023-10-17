@@ -13,11 +13,11 @@ It has even got the original music (Please please don't tell Hank)!
 
 ## Keyboard Bindings
 
-Down, Left, Right arrow keys - what you expect
-Up Arrow - Rotate clockwise
-Z / Y keys - Rotate anticlockwise / clockwise
-Spacebar - Hard drop
-Right Shift - Hold
+* Down, Left, Right arrow keys - what you expect
+* Up Arrow - Rotate clockwise
+* Z / Y keys - Rotate anticlockwise / clockwise
+* Spacebar - Hard drop
+* Right Shift - Hold
 
 ## Still to do
 * SRS does not work fully as intended (triple T-spin using wallkicks may not work)
