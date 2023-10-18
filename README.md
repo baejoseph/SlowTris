@@ -20,6 +20,5 @@ It has even got the original music (Please please don't tell Hank)!
 * Right Shift - Hold
 
 ## Still to do
-* SRS does not work fully as intended (triple T-spin using wallkicks may not work)
-* Have not yet implemented combo scoring / sound effects
+* Have not yet implemented combo scoring / sound effects.
 * High scores.

@@ -131,7 +131,7 @@ class Game:
         self.next_block = self.get_random_block()
         
     def rotate_clockwise(self)->None:
-        for test_number in range(4):
+        for test_number in range(5):
             row,col = self.current_block.wall_kick_clockwise(test_number)
             self.current_block.move(row,col)
             self.current_block.rotate_clockwise()
@@ -146,7 +146,7 @@ class Game:
                 self.current_block.rotate_anticlockwise()
 
     def rotate_anticlockwise(self)->None:
-        for test_number in range(4):
+        for test_number in range(5):
             row,col = self.current_block.wall_kick_anticlockwise(test_number)
             self.current_block.rotate_anticlockwise()
             self.current_block.move(row,col)
