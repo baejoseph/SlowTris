@@ -68,32 +68,17 @@ class Block:
     def rotate_anticlockwise(self)->None:
         self.rotation_states = self.rotation_states[-1:] + self.rotation_states[:-1]
         
-    def wall_kick_clockwise(self,test_number:int)->(int,int):
+    def wall_kick(self,test_number:int,direction:str)->(int,int):
         if id == 4: return (0,0)
-        elif id == 3: return SRSI[self.rotation_states[0]]['clockwise'][test_number]
+        elif id == 3: return SRSI[self.rotation_states[0]][direction][test_number]
         else:
-            return SRS[self.rotation_states[0]]['clockwise'][test_number]
+            return SRS[self.rotation_states[0]][direction][test_number]
         
-    def wall_kick_anticlockwise(self,test_number:int)->(int,int):
-        if id == 4: return (0,0)
-        elif id == 3: return SRSI[self.rotation_states[0]]['anticlockwise'][test_number]
-        else:
-            return SRS[self.rotation_states[0]]['anticlockwise'][test_number]
-        
-    def draw(self, screen:pygame.Surface, offset_x, offset_y)->None:
+    def draw(self, screen:pygame.Surface, offset_x, offset_y, fill:int = 0)->None:
         tiles:[Position] = self.get_cell_positions()
         for tile in tiles:
             tile_rect = pygame.Rect(tile.column * self.cell_size + self.draw_offset + offset_x,
                                     tile.row * self.cell_size + self.draw_offset + offset_y,
                                     self.cell_size - self.draw_offset,
                                     self.cell_size - self.draw_offset)
-            pygame.draw.rect(screen, self.colors[self.id], tile_rect,0,5)
-            
-    def draw_ghost(self, screen:pygame.Surface, offset_x, offset_y)->None:
-        tiles:[Position] = self.get_cell_positions()
-        for tile in tiles:
-            tile_rect = pygame.Rect(tile.column * self.cell_size + self.draw_offset + offset_x,
-                                    tile.row * self.cell_size + self.draw_offset + offset_y,
-                                    self.cell_size - self.draw_offset,
-                                    self.cell_size - self.draw_offset)
-            pygame.draw.rect(screen, self.colors[self.id], tile_rect,1,5)
+            pygame.draw.rect(screen, self.colors[self.id], tile_rect,fill,5)

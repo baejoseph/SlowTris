@@ -132,7 +132,7 @@ class Game:
         
     def rotate_clockwise(self)->None:
         for test_number in range(5):
-            row,col = self.current_block.wall_kick_clockwise(test_number)
+            row,col = self.current_block.wall_kick(test_number, 'clockwise')
             self.current_block.move(row,col)
             self.current_block.rotate_clockwise()
             if self.block_fits(): 
@@ -147,7 +147,7 @@ class Game:
 
     def rotate_anticlockwise(self)->None:
         for test_number in range(5):
-            row,col = self.current_block.wall_kick_anticlockwise(test_number)
+            row,col = self.current_block.wall_kick(test_number, 'anticlockwise')
             self.current_block.rotate_anticlockwise()
             self.current_block.move(row,col)
             if self.block_fits():
@@ -173,7 +173,7 @@ class Game:
     def draw(self,screen:pygame.Surface):
         self.grid.draw(screen)
         self.current_block.draw(screen,self.screen_offset,self.screen_offset)
-        self.current_ghost.draw_ghost(screen, self.screen_offset, self.screen_offset)
+        self.current_ghost.draw(screen, self.screen_offset, self.screen_offset, 1)
         
         next_offset_x, next_offset_y = 270, 200
         if self.next_block.id == 3: next_offset_x, next_offset_y = 255, 220
