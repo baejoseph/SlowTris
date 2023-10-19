@@ -59,7 +59,7 @@ class Block:
         self.column_offset += cols
         
     def get_cell_positions(self)->[Position]:
-        tiles:Position = self.cells[self.rotation_states[0]]
+        tiles:[Position] = self.cells[self.rotation_states[0]]
         return [Position(position.row + self.row_offset, position.column + self.column_offset) for position in tiles]
         
     def rotate_clockwise(self)->None:
