@@ -11,6 +11,7 @@ class Grid:
         self.draw_offset: int = 1
         self.reset()
         self.colors:[color] = Colors.get_cell_colors()
+        self.piece_falling_after_line_clear_sound = pygame.mixer.Sound('Sound/piece-falling-after-line-clear.wav')
         
     def print_grid(self)->None:
         for row in range(self.num_rows):

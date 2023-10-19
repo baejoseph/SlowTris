@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, time
 
 from game import Game
 from colors import Colors
@@ -22,7 +22,10 @@ height:int = 620
 screen_offset:int = 10
 fps:int = 60
 fall_delay: int = 600000
-hold_key_delay: int = 100
+hold_key_delay: int = 200
+down_key_down:bool = False
+left_key_down:bool = False
+right_key_down:bool = False
 
 screen:pygame.Surface = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Python Tetris")
@@ -33,13 +36,11 @@ game:Game = Game(screen_offset)
 GAME_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(GAME_UPDATE, fall_delay)
 
-KEY_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(KEY_UPDATE, hold_key_delay)
-
-down_key_down:bool = False
-
 while True:
+    
     for event in pygame.event.get():
+        if event.type == GAME_UPDATE:
+            game.fall_down()
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -47,20 +48,39 @@ while True:
             if game.game_over == True:
                 game.game_over = False
                 game.reset()
-            if event.key == pygame.K_LEFT: game.move_left()
-            if event.key == pygame.K_RIGHT: game.move_right()
-            if event.key == pygame.K_DOWN: down_key_down = True
+            if event.key == pygame.K_LEFT: 
+                game.move_left()
+                left_key_timer = time.time()
+                left_key_down = True
+            if event.key == pygame.K_RIGHT: 
+                game.move_right()
+                right_key_timer = time.time()
+                right_key_down = True
+            if event.key == pygame.K_DOWN and not down_key_down: 
+                game.move_down()
+                down_key_timer = time.time()
+                down_key_down = True
             if event.key == pygame.K_UP: game.rotate_clockwise()
             if event.key == pygame.K_x: game.rotate_clockwise()
             if event.key == pygame.K_z: game.rotate_anticlockwise()
             if event.key == pygame.K_SPACE: game.hard_drop()
             if event.key == pygame.K_RSHIFT: game.hold_piece()
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN: down_key_down = False
-        #if event.type == GAME_UPDATE and game.game_over == False:
-        #    game.move_down()
-        if event.type == KEY_UPDATE and down_key_down == True: 
-            game.move_down()        
+            if event.key == pygame.K_DOWN: 
+                down_key_down = False
+            if event.key == pygame.K_LEFT: 
+                left_key_down = False
+            if event.key == pygame.K_RIGHT: 
+                right_key_down = False
+    if  (down_key_down == True) and (1000*(time.time() - down_key_timer) > hold_key_delay): 
+        game.move_down()
+        down_key_timer = time.time()
+    if  (left_key_down == True) and (1000*(time.time() - left_key_timer) > hold_key_delay): 
+        game.move_left()
+        left_key_timer = time.time()
+    if  (right_key_down == True) and (1000*(time.time() - right_key_timer) > hold_key_delay): 
+        game.move_right()
+        right_key_timer = time.time()
     #Drawing
     score_value_surface = title_font.render(str(game.score), True, Colors.white)
     

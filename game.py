@@ -19,7 +19,6 @@ class Game:
         self.game_over_sound = pygame.mixer.Sound('Sound/game-over.wav')
         self.landing_sound = pygame.mixer.Sound('Sound/piece-landed.wav')
         self.harddrop_sound = pygame.mixer.Sound('Sound/harddrop.wav')
-        self.piece_falling_after_line_clear_sound = pygame.mixer.Sound('Sound/piece-falling-after-line-clear.wav')
         pygame.mixer.music.load('Sound/tetris-gameboy-02.mp3')
         pygame.mixer.music.play(-1)
         self.reset()
@@ -96,12 +95,15 @@ class Game:
         self.ghost_fits()
         
     def move_down(self)->None:
+        self.fall_down()
+        self.move_sound.play()
+        self.update_score('',1)
+        
+    def fall_down(self)->None:
         self.current_block.move(1,0)
         if self.block_fits()==False:
             self.current_block.move(-1,0)
             self.lock_block()
-        self.move_sound.play()
-        self.update_score('',1)
             
     def hard_drop(self)->None:
         self.update_score('',2*(self.current_ghost.row_offset - self.current_block.row_offset))
@@ -116,7 +118,6 @@ class Game:
         cleared_rows:int = self.grid.clear_full_rows()
         if cleared_rows > 0:
             self.clear_sound.play()
-            self.piece_falling_after_line_clear_sound.play()
             if cleared_rows == 1: self.update_score('single')
             if cleared_rows == 2: self.update_score('double')
             if cleared_rows == 3: self.update_score('triple')
