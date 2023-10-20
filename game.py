@@ -1,6 +1,7 @@
 import pygame
 
 from grid import Grid
+from score import Tally
 from position import Position
 from block import Block
 from blocks import LBlock,IBlock,SBlock,JBlock,OBlock,TBlock,ZBlock
@@ -30,18 +31,9 @@ class Game:
         self.get_current_ghost()
         self.next_block: Block = self.get_random_block()
         self.hold_block: Block = None
-        self.score: int = 0
+        self.score: Tally = Tally()
+        self.move_name: str = None
         self.game_over: bool = False
-
-    def update_score(self, lines_cleared:str, move_down_points:int=0)->None:
-        self.score += move_down_points
-        if lines_cleared == 'single': self.score += 100
-        if lines_cleared == 'double': self.score += 300
-        if lines_cleared == 'triple': self.score += 500
-        if lines_cleared == 'tetris': self.score += 800
-        if lines_cleared == 'single T-spin': self.score += 800
-        if lines_cleared == 'double T-spin': self.score += 1200
-        if lines_cleared == 'triple T-spin': self.score += 1600
         
     def get_random_block(self)->Block:
             if len(self.blocks)==0: 
@@ -59,9 +51,10 @@ class Game:
     def block_fits(self, block:Block=None)->bool:
         if block is None: block = self.current_block
         tiles:[Position] = block.get_cell_positions()
-        for tile in [x for x in tiles if x.is_in_screen()]:
+        for tile in tiles:
             if self.grid.is_inside(tile.row, tile.column) == False:
                 return False
+        for tile in [x for x in tiles if x.is_in_screen()]:
             if self.grid.is_empty(tile.row, tile.column) == False:
                 return False
         return True
@@ -107,7 +100,7 @@ class Game:
     def move_down(self)->None:
         self.fall_down()
         self.move_sound.play()
-        self.update_score('',1)
+        self.score.move_down_points(1)
         
     def fall_down(self)->None:
         self.current_block.move(1,0)
@@ -116,7 +109,7 @@ class Game:
             self.lock_block()
             
     def hard_drop(self)->None:
-        self.update_score('',2*(self.current_ghost.row_offset - self.current_block.row_offset))
+        self.score.move_down_points(2*(self.current_ghost.row_offset - self.current_block.row_offset))
         self.current_block.row_offset = self.current_ghost.row_offset
         self.lock_block()
             
@@ -128,12 +121,10 @@ class Game:
         cleared_rows:int = self.grid.clear_full_rows()
         if cleared_rows > 0:
             self.clear_sound.play()
-            if cleared_rows == 1: self.update_score('single')
-            if cleared_rows == 2: self.update_score('double')
-            if cleared_rows == 3: self.update_score('triple')
-            if cleared_rows == 4: 
+            self.move_name = self.score.update(cleared_rows)
+            if 'tetris' in self.move_name:
                 self.tetris_sound.play()
-                self.update_score('tetris')
+            self.score.tspin = False
         if self.grid.game_over():
             self.game_over_sound.play()
             pygame.mixer.music.stop()

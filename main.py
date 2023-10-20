@@ -28,7 +28,7 @@ left_key_down:bool = False
 right_key_down:bool = False
 
 screen:pygame.Surface = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Python Tetris")
+pygame.display.set_caption("baejoseph’s Slowtris")
 
 clock:pygame.Clock = pygame.time.Clock()
 game:Game = Game(screen_offset)
@@ -86,7 +86,7 @@ while True:
         right_key_timer = time.time()
         hold_key_delay = 0.2 * initial_hold_key_delay
     #Drawing
-    score_value_surface = title_font.render(str(game.score), True, Colors.white)
+    score_value_surface = title_font.render(str(game.score.get_score()), True, Colors.white)
     
     screen.fill(Colors.dark_blue)
     screen.blit(score_surface, (365,20,50,50))
@@ -98,8 +98,10 @@ while True:
                                                         centerx = score_rect.centerx,
                                                         centery = score_rect.centery
                                                         ))
+    
     pygame.draw.rect(screen,Colors.light_blue, next_rect, 0, 10)
     pygame.draw.rect(screen,Colors.light_blue, hold_rect, 0, 10)
+    
     game.draw(screen)
     
     if game.game_over == True:
