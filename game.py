@@ -19,11 +19,11 @@ class Game:
         self.game_over_sound = pygame.mixer.Sound('Sound/game-over.wav')
         self.landing_sound = pygame.mixer.Sound('Sound/piece-landed.wav')
         self.harddrop_sound = pygame.mixer.Sound('Sound/harddrop.wav')
-        pygame.mixer.music.load('Sound/tetris-gameboy-02.mp3')
-        pygame.mixer.music.play(-1)
         self.reset()
 
     def reset(self)->None:
+        pygame.mixer.music.load('Sound/tetris-gameboy-02.mp3')
+        pygame.mixer.music.play(-1)
         self.grid.reset()
         self.refill_bag()
         self.current_block: Block = self.get_random_block()
@@ -136,6 +136,9 @@ class Game:
                 self.update_score('tetris')
         if self.grid.game_over():
             self.game_over_sound.play()
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('Sound/tetris-gameboy-05.mp3')
+            pygame.mixer.music.play(-1)
             self.game_over = True
         self.current_block = self.next_block
         self.get_current_ghost()

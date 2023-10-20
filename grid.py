@@ -53,7 +53,7 @@ class Grid:
         return cleared_rows
             
     def game_over(self)->bool:
-        if self.grid[0][5] > 0 or self.grid[0][6] > 0 : 
+        if self.grid[0][5] > 0 or self.grid[0][6] > 0 or self.grid[0][4] > 0 or self.grid[0][7] > 0 : 
             return True
         return False
     
