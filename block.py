@@ -2,7 +2,7 @@ import pygame
 from colors import Colors
 from position import Position
 
-SRS = {
+SRS:{int:{str:{int:(int,int)}}} = {
         0:{
             'clockwise':{0:(0,0),1:(0,-1),2:(1,-1),3:(2,0),4:(2,-1)},
             'anticlockwise':{0:(0,0),1:(0,1),2:(-1,1),3:(2,0),4:(2,1)}
@@ -21,7 +21,7 @@ SRS = {
         },    
     }
 
-SRSI = {
+SRSI:{int:{str:{int:(int,int)}}} = {
         0:{
             'clockwise':{0:(0,0),1:(0,-2),2:(0,1),3:(1,-2),4:(-2,1)},
             'anticlockwise':{0:(0,0),1:(0,-1),2:(0,2),3:(-2,-1),4:(1,2)}
@@ -52,7 +52,7 @@ class Block:
     def reset(self)->None:
         self.rotation_states:[int] = [0,1,2,3]
         self.column_offset:int = 3
-        self.row_offset:int = 0
+        self.row_offset:int = -2
     
     def move(self, rows:int, cols: int)->None:
         self.row_offset += rows
@@ -77,8 +77,9 @@ class Block:
     def draw(self, screen:pygame.Surface, offset_x, offset_y, fill:int = 0)->None:
         tiles:[Position] = self.get_cell_positions()
         for tile in tiles:
-            tile_rect = pygame.Rect(tile.column * self.cell_size + self.draw_offset + offset_x,
+            if tile.is_in_screen():
+                tile_rect = pygame.Rect(tile.column * self.cell_size + self.draw_offset + offset_x,
                                     tile.row * self.cell_size + self.draw_offset + offset_y,
                                     self.cell_size - self.draw_offset,
                                     self.cell_size - self.draw_offset)
-            pygame.draw.rect(screen, self.colors[self.id], tile_rect,fill,5)
+                pygame.draw.rect(screen, self.colors[self.id], tile_rect,fill,5)

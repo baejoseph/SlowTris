@@ -56,8 +56,18 @@ class Game:
         self.current_ghost: Block = copy(self.current_block)
         self.ghost_fits()
     
+    def block_fits(self, block:Block=None)->bool:
+        if block is None: block = self.current_block
+        tiles:[Position] = block.get_cell_positions()
+        for tile in [x for x in tiles if x.is_in_screen()]:
+            if self.grid.is_inside(tile.row, tile.column) == False:
+                return False
+            if self.grid.is_empty(tile.row, tile.column) == False:
+                return False
+        return True
+    
     def ghost_fits(self)->None:
-        for row in range(max(self.current_block.row_offset,2), self.grid.num_rows):
+        for row in range(max(self.current_block.row_offset,-2), self.grid.num_rows):
             self.current_ghost.row_offset = row
             self.current_ghost.move(1,0)
             if self.block_fits(self.current_ghost) == False:
@@ -160,16 +170,6 @@ class Game:
             else: 
                 self.current_block.move(-row,-col)
                 self.current_block.rotate_clockwise()
-        
-    def block_fits(self, block:Block=None)->bool:
-        if block is None: block = self.current_block
-        tiles:[Position] = block.get_cell_positions()
-        for tile in tiles:
-            if self.grid.is_inside(tile.row, tile.column) == False:
-                return False
-            if self.grid.is_empty(tile.row, tile.column) == False:
-                return False
-        return True
                 
     def draw(self,screen:pygame.Surface):
         self.grid.draw(screen)

@@ -22,7 +22,7 @@ height:int = 620
 screen_offset:int = 10
 fps:int = 60
 fall_delay: int = 600000
-hold_key_delay: int = 200
+initial_hold_key_delay: int = 200
 down_key_down:bool = False
 left_key_down:bool = False
 right_key_down:bool = False
@@ -45,6 +45,7 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:
+            hold_key_delay = initial_hold_key_delay
             if game.game_over == True:
                 game.game_over = False
                 game.reset()
@@ -75,12 +76,15 @@ while True:
     if  (down_key_down == True) and (1000*(time.time() - down_key_timer) > hold_key_delay): 
         game.move_down()
         down_key_timer = time.time()
+        hold_key_delay = 0.2 * initial_hold_key_delay
     if  (left_key_down == True) and (1000*(time.time() - left_key_timer) > hold_key_delay): 
         game.move_left()
         left_key_timer = time.time()
+        hold_key_delay = 0.2 * initial_hold_key_delay
     if  (right_key_down == True) and (1000*(time.time() - right_key_timer) > hold_key_delay): 
         game.move_right()
         right_key_timer = time.time()
+        hold_key_delay = 0.2 * initial_hold_key_delay
     #Drawing
     score_value_surface = title_font.render(str(game.score), True, Colors.white)
     

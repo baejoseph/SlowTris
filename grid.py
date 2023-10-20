@@ -20,7 +20,7 @@ class Grid:
             print()
             
     def is_inside(self, row:int, col:int)->bool:
-        if row >=0 and row < self.num_rows and col >=0 and col < self.num_cols:
+        if row >=-3 and row < self.num_rows and col >=0 and col < self.num_cols:
             return True
         return False
     
@@ -53,7 +53,8 @@ class Grid:
         return cleared_rows
             
     def game_over(self)->bool:
-        if self.grid[0][5] > 0 or self.grid[0][6] > 0: return True
+        if self.grid[0][5] > 0 or self.grid[0][6] > 0 : 
+            return True
         return False
     
     def reset(self):
