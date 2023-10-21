@@ -31,7 +31,6 @@ class Game:
         self.get_current_ghost()
         self.next_block: Block = self.get_random_block()
         self.hold_block: Block = None
-        self.move_name: str = None
         self.move_count: int = 0
         self.game_over: bool = False
         self.score: Tally = Tally()
@@ -108,6 +107,7 @@ class Game:
         if self.block_fits()==False:
             self.current_block.move(-1,0)
             self.lock_block()
+        self.score.tspin = False
             
     def hard_drop(self)->None:
         self.score.move_down_points(2*(self.current_ghost.row_offset - self.current_block.row_offset))
@@ -122,9 +122,9 @@ class Game:
         cleared_rows:int = self.grid.clear_full_rows()
         if cleared_rows > 0:
             self.clear_sound.play()
-            self.move_name = self.score.update(cleared_rows)
+            self.score.update(cleared_rows)
             self.move_count += 1
-            if 'tetris' in self.move_name:
+            if cleared_rows == 4:
                 self.tetris_sound.play()
             self.score.tspin = False
         if self.grid.game_over():
@@ -143,6 +143,8 @@ class Game:
             self.current_block.move(row,col)
             self.current_block.rotate_clockwise()
             if self.block_fits(): 
+                if self.current_block.id == 6:
+                    self.score.is_tspin()
                 self.rotate_sound.play()
                 self.current_ghost.move(row,col)
                 self.current_ghost.rotate_clockwise()
@@ -158,6 +160,8 @@ class Game:
             self.current_block.rotate_anticlockwise()
             self.current_block.move(row,col)
             if self.block_fits():
+                if self.current_block.id == 6:
+                    self.score.is_tspin()
                 self.rotate_sound.play()
                 self.current_ghost.rotate_anticlockwise()
                 self.current_ghost.move(row,col)

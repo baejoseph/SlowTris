@@ -6,6 +6,7 @@ class Tally:
         self.combo: int = 0
         self.tspin: bool = False
         self.b2btext = ""
+        self.tspintext = ""
         self.move_name = ""
     
     def move_down_points(self,lines:int)->None:
@@ -21,55 +22,62 @@ class Tally:
         self.tspin = True
     
     def get_move_name(self)->(str):
-        return self.b2btext, self.move_name
+        return self.b2btext, self.tspintext, self.move_name
                 
-    def update(self, lines_cleared:str)->str:
+    def update(self, lines_cleared:str)->None:
         if lines_cleared == 1:
             self.move_name = "single"
             if self.tspin:
+                self.tspintext = "T-spin"
                 if self.backtoback: 
                     self.b2btext = "back-to-back "
                     score = 1200
                 else: 
                     b2btext = ""
                     score = 800
-                self.score = score
+                self.score += score
                 self.backtoback = True
             else:
+                self.tspintext = ""
                 self.score += 100
                 self.backtoback = False
                 self.b2btext = ""
         if lines_cleared == 2: 
             self.move_name = "double"
             if self.tspin:
+                self.tspintext = "T-spin"
                 if self.backtoback: 
                     self.b2btext = "back-to-back "
                     score = 1800
                 else: 
                     self.b2btext = ""
                     score = 1200
-                self.score = score
+                self.score += score
                 self.backtoback = True
             else:
+                self.tspintext = ""
                 self.score += 300
                 self.backtoback = False
                 self.b2btext = ""
         if lines_cleared == 3:
             self.move_name = "triple"
             if self.tspin:
+                self.tspintext = "T-spin"
                 if self.backtoback: 
                     self.b2btext = "back-to-back "
                     score = 2400
                 else: 
                     self.b2btext = ""
                     score = 1600
-                self.score = score
+                self.score += score
                 self.backtoback = True
             else:
+                self.tspintext = ""
                 self.score += 500
                 self.backtoback = False
                 self.b2btext = ""
         if lines_cleared == 4: 
+            self.tspintext = ""
             self.move_name = "tetris"
             if self.backtoback: 
                 self.b2btext = "back-to-back "
@@ -79,7 +87,6 @@ class Tally:
                 score = 800
             self.score += score
             self.backtoback = True
-        return self.get_move_name()
         
     def get_score(self)->int:
         return self.score

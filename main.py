@@ -89,29 +89,19 @@ while True:
         right_key_timer = time.time()
         hold_key_delay = 0.2 * initial_hold_key_delay
     
-    #Drawing: Score
+    #Score
     score_value_surface = title_font.render(str(game.score.get_score()), True, Colors.white)
-    screen.blit(score_surface, (365,20,50,50))
-    
-    pygame.draw.rect(screen,Colors.light_blue, score_rect, 0, 10)
-    screen.blit(score_value_surface, score_value_surface.get_rect(
-                                                        centerx = score_rect.centerx,
-                                                        centery = score_rect.centery
-                                                        ))
     
     #Displaying Move Name for display_move_name ms.
-    b2b_display, move_name_display = game.score.get_move_name()
+    b2b_display, tspin_display ,move_name_display = game.score.get_move_name()
     
-    b2b_surface = title_font.render(b2b_display, True, Colors.white)
-    move_name_surface = title_font.render(move_name_display, True, Colors.white)
+    b2b_surface = title_font.render(str(b2b_display), True, Colors.white)
+    tspin_surface = title_font.render(str(tspin_display), True, Colors.yellow)
+    move_name_surface = title_font.render(str(move_name_display), True, Colors.white)
     
     if game.move_count > last_move_count:
         last_move_count = game.move_count
         move_name_timer = time.time()
-    
-    if 1000*(time.time() - move_name_timer) < display_move_name:
-        screen.blit(b2b_surface, move_name_surface.get_rect(centerx = 375, centery = 520))
-        screen.blit(move_name_surface, move_name_surface.get_rect(centerx = 375, centery = 550))
     
     #Drawing
     screen.fill(Colors.dark_blue)
@@ -120,6 +110,19 @@ while True:
     screen.blit(hold_surface, (375,330,50,50))
     pygame.draw.rect(screen,Colors.light_blue, next_rect, 0, 10)
     pygame.draw.rect(screen,Colors.light_blue, hold_rect, 0, 10)
+    pygame.draw.rect(screen,Colors.light_blue, score_rect, 0, 10)
+    
+    screen.blit(score_surface, (365,20,50,50))
+    screen.blit(score_value_surface, score_value_surface.get_rect(
+                                                        centerx = score_rect.centerx,
+                                                        centery = score_rect.centery
+                                                        ))
+    
+    if 1000*(time.time() - move_name_timer) < display_move_name:
+        screen.blit(b2b_surface, b2b_surface.get_rect(centerx = 410, centery = 550))
+        screen.blit(tspin_surface, tspin_surface.get_rect(centerx = 400, centery = 570))
+        screen.blit(move_name_surface, move_name_surface.get_rect(centerx = 400, centery = 590))
+    
     
     game.draw(screen)
     
