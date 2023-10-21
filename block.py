@@ -77,7 +77,7 @@ class Block:
     def draw(self, screen:pygame.Surface, offset_x, offset_y, fill:int = 0)->None:
         tiles:[Position] = self.get_cell_positions()
         for tile in tiles:
-            if tile.is_in_screen():
+            if tile.is_in_screen() or offset_y > 60:
                 tile_rect = pygame.Rect(tile.column * self.cell_size + self.draw_offset + offset_x,
                                     tile.row * self.cell_size + self.draw_offset + offset_y,
                                     self.cell_size - self.draw_offset,

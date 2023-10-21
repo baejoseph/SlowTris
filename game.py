@@ -31,9 +31,10 @@ class Game:
         self.get_current_ghost()
         self.next_block: Block = self.get_random_block()
         self.hold_block: Block = None
-        self.score: Tally = Tally()
         self.move_name: str = None
+        self.move_count: int = 0
         self.game_over: bool = False
+        self.score: Tally = Tally()
         
     def get_random_block(self)->Block:
             if len(self.blocks)==0: 
@@ -122,6 +123,7 @@ class Game:
         if cleared_rows > 0:
             self.clear_sound.play()
             self.move_name = self.score.update(cleared_rows)
+            self.move_count += 1
             if 'tetris' in self.move_name:
                 self.tetris_sound.play()
             self.score.tspin = False
@@ -165,19 +167,18 @@ class Game:
                 self.current_block.move(-row,-col)
                 self.current_block.rotate_clockwise()
                 
-    def draw(self,screen:pygame.Surface):
+    def draw(self,screen:pygame.Surface)->None:
         self.grid.draw(screen)
         self.current_block.draw(screen,self.screen_offset,self.screen_offset)
         self.current_ghost.draw(screen, self.screen_offset, self.screen_offset, 1)
         
-        next_offset_x, next_offset_y = 270, 200
-        if self.next_block.id == 3: next_offset_x, next_offset_y = 255, 220
-        if self.next_block.id == 4: next_offset_x, next_offset_y = 255, 210
+        next_offset_x, next_offset_y = 270, 260
+        if self.next_block.id == 3: next_offset_x, next_offset_y = 255, 280
+        if self.next_block.id == 4: next_offset_x, next_offset_y = 255, 270
         self.next_block.draw(screen,next_offset_x, next_offset_y)
         
         if self.hold_block is not None:
-            hold_offset_x,hold_offset_y = 270, 400
-            if self.hold_block.id == 3: hold_offset_x, hold_offset_y = 255, 420
-            if self.hold_block.id == 4: hold_offset_x, hold_offset_y = 255, 410
+            hold_offset_x,hold_offset_y = 270, 460
+            if self.hold_block.id == 3: hold_offset_x, hold_offset_y = 255, 480
+            if self.hold_block.id == 4: hold_offset_x, hold_offset_y = 255, 470
             self.hold_block.draw(screen,hold_offset_x, hold_offset_y)
-        

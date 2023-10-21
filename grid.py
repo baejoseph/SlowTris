@@ -68,5 +68,5 @@ class Grid:
                                         row*self.cell_size + self.draw_offset + self.screen_offset,
                                         self.cell_size - self.draw_offset,
                                         self.cell_size - self.draw_offset)
-                pygame.draw.rect(screen, self.colors[cell_value],cell_rect)
+                pygame.draw.rect(screen, self.colors[cell_value],cell_rect,0,3)
                 
