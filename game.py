@@ -110,7 +110,9 @@ class Game:
         self.score.tspin = False
             
     def hard_drop(self)->None:
-        self.score.move_down_points(2*(self.current_ghost.row_offset - self.current_block.row_offset))
+        lines_dropped = (self.current_ghost.row_offset - self.current_block.row_offset)
+        if lines_dropped > 0: self.score.tspin = False
+        self.score.move_down_points(2*lines_dropped)
         self.current_block.row_offset = self.current_ghost.row_offset
         self.lock_block()
             
