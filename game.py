@@ -33,6 +33,7 @@ class Game:
         self.hold_block: Block = None
         self.move_count: int = 0
         self.game_over: bool = False
+        self.swapped_out: bool = False
         self.score: Tally = Tally()
         
     def get_random_block(self)->Block:
@@ -68,6 +69,13 @@ class Game:
                 break
     
     def hold_piece(self)->None:
+        if self.swapped_out:
+            return None
+        else:
+            self.swap_out_piece()
+            self.swapped_out = True
+        
+    def swap_out_piece(self)->None:
         self.temp_block = copy(self.current_block)
         self.temp_block.reset()
         if self.temp_block.id == 4: self.temp_block.column_offset = 4
@@ -137,6 +145,7 @@ class Game:
             pygame.mixer.music.load('Sound/tetris-gameboy-05.mp3')
             pygame.mixer.music.play(-1)
             self.game_over = True
+        self.swapped_out = False
         self.current_block = self.next_block
         self.get_current_ghost()
         self.next_block = self.get_random_block()

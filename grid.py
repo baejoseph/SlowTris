@@ -44,7 +44,7 @@ class Grid:
             
     def clear_full_rows(self)->int:
         cleared_rows: int = 0
-        for row in range(self.num_rows-1,0,-1):
+        for row in range(self.num_rows-1,-1,-1):
             if self.is_row_full(row):
                 self.clear_row(row)
                 cleared_rows += 1
