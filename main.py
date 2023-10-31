@@ -94,7 +94,11 @@ while True:
     
     #Displaying Move Name for display_move_name ms.
     b2b_display, tspin_display ,move_name_display = game.score.get_move_name()
+    combo_display = game.score.get_combo()
+    if combo_display is None: combo_display = ""
+    else: combo_display = f"combo {combo_display}"
     
+    combo_surface = title_font.render(str(combo_display), True, Colors.orange)
     b2b_surface = title_font.render(str(b2b_display), True, Colors.white)
     tspin_surface = title_font.render(str(tspin_display), True, Colors.yellow)
     move_name_surface = title_font.render(str(move_name_display), True, Colors.white)
@@ -119,6 +123,7 @@ while True:
                                                         ))
     
     if 1000*(time.time() - move_name_timer) < display_move_name:
+        screen.blit(combo_surface, combo_surface.get_rect(centerx = 410, centery = 530))
         screen.blit(b2b_surface, b2b_surface.get_rect(centerx = 410, centery = 550))
         screen.blit(tspin_surface, tspin_surface.get_rect(centerx = 400, centery = 570))
         screen.blit(move_name_surface, move_name_surface.get_rect(centerx = 400, centery = 590))

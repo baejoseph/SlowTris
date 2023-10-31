@@ -36,6 +36,11 @@ class Tally:
         self.score += max(0,self.combo) * 50
         self.combo = -1
         
+    def get_combo(self)->int:
+        if self.combo > 0:
+            return self.combo
+        else: return None
+        
     def is_tspin(self)->None:
         self.tspin = True
     
