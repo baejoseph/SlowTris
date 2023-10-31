@@ -124,11 +124,13 @@ class Game:
         cleared_rows:int = self.grid.clear_full_rows()
         if cleared_rows > 0:
             self.clear_sound.play()
+            self.score.increment_combo()
             self.score.update(cleared_rows)
             self.move_count += 1
             if cleared_rows == 4:
                 self.tetris_sound.play()
             self.score.tspin = False
+        else: self.score.reset_combo()
         if self.grid.game_over():
             self.game_over_sound.play()
             pygame.mixer.music.stop()

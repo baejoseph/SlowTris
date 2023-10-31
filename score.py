@@ -1,9 +1,26 @@
+score_update_rulset:[{}] = [{'movename': '',
+                             'b2btspinscore': 0,
+                             'tspinscore': 0,
+                             'score': 0},
+                            {'movename': 'single',
+                             'b2btspinscore': 1200,
+                             'tspinscore': 800,
+                             'score': 100},
+                            {'movename': 'double',
+                             'b2btspinscore': 1800,
+                             'tspinscore': 1200,
+                             'score': 300},
+                            {'movename': 'triple',
+                             'b2btspinscore': 2400,
+                             'tspinscore': 1600,
+                             'score': 500}]
+
 
 class Tally:
     def __init__(self)->None:
         self.score: int = 0
         self.backtoback: bool = False
-        self.combo: int = 0
+        self.combo: int = -1
         self.tspin: bool = False
         self.b2btext = ""
         self.tspintext = ""
@@ -12,11 +29,12 @@ class Tally:
     def move_down_points(self,lines:int)->None:
         self.score += lines
 
-    def is_combo(self)->None:
+    def increment_combo(self)->None:
         self.combo += 1
         
-    def broke_combo(self)->None:
-        self.combo = 0
+    def reset_combo(self)->None:
+        self.score += max(0,self.combo) * 50
+        self.combo = -1
         
     def is_tspin(self)->None:
         self.tspin = True
@@ -24,56 +42,22 @@ class Tally:
     def get_move_name(self)->(str):
         return self.b2btext, self.tspintext, self.move_name
                 
-    def update(self, lines_cleared:str)->None:
-        if lines_cleared == 1:
-            self.move_name = "single"
+    def update(self, lines_cleared:int)->None:
+        if lines_cleared < 4:
+            self.move_name = score_update_rulset[lines_cleared]['movename']
             if self.tspin:
                 self.tspintext = "T-spin"
                 if self.backtoback: 
                     self.b2btext = "back-to-back "
-                    score = 1200
+                    score = score_update_rulset[lines_cleared]['b2btspinscore']
                 else: 
                     b2btext = ""
-                    score = 800
+                    score = score_update_rulset[lines_cleared]['tspinscore']
                 self.score += score
                 self.backtoback = True
             else:
                 self.tspintext = ""
-                self.score += 100
-                self.backtoback = False
-                self.b2btext = ""
-        if lines_cleared == 2: 
-            self.move_name = "double"
-            if self.tspin:
-                self.tspintext = "T-spin"
-                if self.backtoback: 
-                    self.b2btext = "back-to-back "
-                    score = 1800
-                else: 
-                    self.b2btext = ""
-                    score = 1200
-                self.score += score
-                self.backtoback = True
-            else:
-                self.tspintext = ""
-                self.score += 300
-                self.backtoback = False
-                self.b2btext = ""
-        if lines_cleared == 3:
-            self.move_name = "triple"
-            if self.tspin:
-                self.tspintext = "T-spin"
-                if self.backtoback: 
-                    self.b2btext = "back-to-back "
-                    score = 2400
-                else: 
-                    self.b2btext = ""
-                    score = 1600
-                self.score += score
-                self.backtoback = True
-            else:
-                self.tspintext = ""
-                self.score += 500
+                self.score += score_update_rulset[lines_cleared]['score']
                 self.backtoback = False
                 self.b2btext = ""
         if lines_cleared == 4: 
