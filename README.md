@@ -6,7 +6,7 @@ The pieces fall very slowly (once every 3 minutes) and there are no levels!
 
 So you are invited to take your time and hard drop at your own pace!
 Treat this like a puzzle game of your own making.
-It has even got the original music (Please please don't tell Hank)!
+It has even got the original GB music (Please don't tell Henk)!
 
 ## Requirements
 **pygame**
@@ -20,5 +20,5 @@ It has even got the original music (Please please don't tell Hank)!
 * Right Shift - Hold
 
 ## Still to do
-* Have not yet implemented combo scoring / sound effects.
 * High scores.
+* Multi-directional ghost/hard-drop.
