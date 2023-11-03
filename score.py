@@ -18,9 +18,13 @@ score_update_rulset:[{}] = [{'movename': '',
 
 class Tally:
     def __init__(self)->None:
+        self.reset()
+        
+    def reset(self)->None:
         self.score: int = 0
         self.backtoback: bool = False
         self.combo: int = -1
+        self.streak: int = 0
         self.tspin: bool = False
         self.b2btext = ""
         self.tspintext = ""
@@ -39,6 +43,17 @@ class Tally:
     def get_combo(self)->int:
         if self.combo > 0:
             return self.combo
+        else: return None
+    
+    def increment_streak(self)->None:
+        self.streak += 1
+        
+    def reset_streak(self)->None:
+        self.streak = 0
+        
+    def get_streak(self)->int:
+        if self.streak > 1 :
+            return self.streak
         else: return None
         
     def is_tspin(self)->None:

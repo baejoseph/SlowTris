@@ -20,6 +20,7 @@ class Game:
         self.game_over_sound = pygame.mixer.Sound('Sound/game-over.wav')
         self.landing_sound = pygame.mixer.Sound('Sound/piece-landed.wav')
         self.harddrop_sound = pygame.mixer.Sound('Sound/harddrop.wav')
+        self.score: Tally = Tally()
         self.reset()
 
     def reset(self)->None:
@@ -34,7 +35,8 @@ class Game:
         self.move_count: int = 0
         self.game_over: bool = False
         self.swapped_out: bool = False
-        self.score: Tally = Tally()
+        self.score.reset()
+        
         
     def get_random_block(self)->Block:
             if len(self.blocks)==0: 
@@ -135,6 +137,9 @@ class Game:
             self.score.increment_combo()
             self.score.update(cleared_rows)
             self.move_count += 1
+            if self.score.backtoback:
+                self.score.increment_streak()
+            else: self.score.reset_streak()
             if cleared_rows == 4:
                 self.tetris_sound.play()
             self.score.tspin = False

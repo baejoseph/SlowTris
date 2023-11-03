@@ -50,8 +50,8 @@ while True:
         if event.type == pygame.KEYDOWN:
             hold_key_delay = initial_hold_key_delay
             if game.game_over == True:
-                game.game_over = False
                 game.reset()
+                move_name_timer = time.time()
             if event.key == pygame.K_LEFT: 
                 game.move_left()
                 left_key_timer = time.time()
@@ -97,6 +97,9 @@ while True:
     combo_display = game.score.get_combo()
     if combo_display is None: combo_display = ""
     else: combo_display = f"combo {combo_display}"
+    
+    streak_display = game.score.get_streak()
+    if streak_display is not None: combo_display = f"streak {streak_display}"
     
     combo_surface = title_font.render(str(combo_display), True, Colors.orange)
     b2b_surface = title_font.render(str(b2b_display), True, Colors.white)
